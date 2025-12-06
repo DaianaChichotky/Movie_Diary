@@ -11,7 +11,7 @@
 
     <!----------------------------- Navbar start --------------------------->
     <nav
-      class="bg-white rounded-xl p-4 flex flex-wrap items-center justify-between fixed top-0 left-0 right-0 z-50 shadow-md"
+      class="bg-white p-4 flex flex-wrap items-center justify-between fixed top-0 left-0 right-0 z-50 shadow-md"
     >
       <!-- Name: Movie Diary -->
       <div>
@@ -38,34 +38,43 @@
     <!----------------------------- Home start ----------------------------->
     <section id="homepage" class="pt-32 pb-10 text-center">
       <div class="max-w-xl mx-auto"></div>
-        <!-- Title -->
-        <h2 class="text-3xl font-bold font-sans text-[#1e40af] mb-6">
-          Popular movies <span class="movies">🎬</span>
-        </h2>
+      <!-- Title -->
+      <h2 class="text-3xl font-bold font-sans text-[#1e40af] mb-6">
+        Popular movies <span class="movies">🎬</span>
+      </h2>
 
-        <!-- Subtitle -->
-        <p class="text-[#1e3a8a] text-lg mb-8">Search your favorite movies and save it in your favourites!</p>
+      <!-- Subtitle -->
+      <p class="text-[#1e3a8a] text-lg mb-8">
+        Search your favorite movies and save it in your favourites!
+      </p>
 
-        <!-- Seach engine -->
-        <form id="search-form" class="flex justify-center">
-          <input
-            type="text"
-            id="search-input"
-            placeholder="Search a movie..."
-            class="border border-gray-300 rounded-l-lg px-4 py-2 w-full max-w-xl focus:outline-none focus:ring-blue-500"
-            required
-          />
-          <button
-            type="submit"
-            class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 font-semibold transition cursor-pointer"
-          >
-            Search
-          </button>
-        </form>
-      </div>
+      <!-- Seach engine -->
+      <form id="search-form" class="flex justify-center">
+        <input
+          type="text"
+          id="search-input"
+          placeholder="Search a movie..."
+          class="border border-gray-300 rounded-l-lg px-4 py-2 w-full max-w-xl focus:outline-none focus:ring-blue-500"
+          required
+        />
+        <button
+          type="submit"
+          class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 font-semibold transition cursor-pointer"
+        >
+          Search
+        </button>
+      </form>
+
+      <!-- Search dialog -->
+      <dialog id="search-dialog">
+        <h2>Search Results</h2>
+        <div id="search-results"></div>
+        <button id="close-dialog">Close</button>
+      </dialog>
+
+      <!-- Movies list-->
+      <section id="movies-container"></section>
     </section>
-
-    <!-- Search engine -->
 
     <script src="main.js"></script>
   </body>
