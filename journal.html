@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Movie Diary</title>
+    <!-- Tailwind (browser‑compiled) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      /* Optional smooth transition for the notes area */
+      .notes-enter {
+        max-height: 0;
+        opacity: 0;
+        transition: all 0.3s ease-out;
+      }
+      .notes-enter-active {
+        max-height: 200px; /* enough for the textarea */
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body class="font-sans bg-[#ecfeff]">
+    <a id="top"></a>
+
+    <!-- ==================== Navbar ==================== -->
+    <nav
+      class="font-sans bg-white p-4 flex flex-wrap items-center justify-between fixed top-0 left-0 right-0 z-50"
+    >
+      <!-- Brand -->
+      <div>
+        <h1 class="text-4xl text-center font-bold font-sans text-[#1e40af]">
+          Movie Diary
+        </h1>
+      </div>
+
+      <!-- Tabs -->
+      <div class="flex flex-wrap justify-center sm:justify-start sm:space-x-10 mt-2 flex">
+        <a
+          href="#home-content"
+          class="border-2 border-[#1e40af] bg-[#1e40af] text-white font-bold px-7 py-3 rounded-md hover:bg-sky-300 hover:text-black transition text-sm text-center w-full sm:w-auto"
+          >HomePage</a
+        >
+        <a
+          href="#journal-content"
+          class="border-2 border-[#1e40af] bg-[#1e40af] text-white font-bold px-7 py-3 rounded-md hover:bg-sky-300 hover:text-black transition text-sm text-center w-full sm:w-auto"
+          >Journal</a
+        >
+      </div>
+    </nav>
+
+    <!-- ==================== Main Content ==================== -->
+    <main class="pt-24 px-4"> <!-- pt-24 adds space for the fixed navbar -->
+      <div class="h-20">
+        <h2 class="text-3xl text-center font-bold font-sans text-black">
+          Your favorite movies
+        </h2>
+      </div>
+
+      <!-- ======== Movie Cards Grid ======== -->
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- ----- Card #1 (duplicate & modify for each movie) ----- -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+          <img
+            src="https://via.placeholder.com/400x225"
+            alt="Movie Poster"
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-4 flex-1 flex flex-col">
+            <h3 class="text-xl font-semibold mb-2">Movie Title 1</h3>
+            <p class="text-gray-600 flex-1">
+              Short description – genre, year, director, a tagline, etc.
+            </p>
+            <button
+              type="button"
+              class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
+              onclick="toggleNotes(this)"
+            >
+              Add Note
+            </button>
+            <div class="mt-3 notes-enter hidden">
+              <textarea
+                rows="4"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Write your personal notes here..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ----- Card #2 ----- -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+          <img
+            src="https://via.placeholder.com/400x225"
+            alt="Movie Poster"
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-4 flex-1 flex flex-col">
+            <h3 class="text-xl font-semibold mb-2">Movie Title 2</h3>
+            <p class="text-gray-600 flex-1">
+              Short description – genre, year, director, a tagline, etc.
+            </p>
+            <button
+              type="button"
+              class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
+              onclick="toggleNotes(this)"
+            >
+              Add Note
+            </button>
+            <div class="mt-3 notes-enter hidden">
+              <textarea
+                rows="4"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Write your personal notes here..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- ----- Card #3 (add as many as you need) ----- -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+          <img
+            src="https://via.placeholder.com/400x225"
+            alt="Movie Poster"
+            class="w-full h-48 object-cover"
+          />
+          <div class="p-4 flex-1 flex flex-col">
+            <h3 class="text-xl font-semibold mb-2">Movie Title 3</h3>
+            <p class="text-gray-600 flex-1">
+              Short description – genre, year, director, a tagline, etc.
+            </p>
+            <button
+              type="button"
+              class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
+              onclick="toggleNotes(this)"
+            >
+              Add Note
+            </button>
+            <div class="mt-3 notes-enter hidden">
+              <textarea
+                rows="4"
+                class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Write your personal notes here..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add more cards by copying the block above and updating the
+             image source, title, and description. -->
+      </div>
+      <!-- ======== End of Grid ======== -->
+    </main>
+
+    <script src="journal.js"></script>
+    <script>
+      // Simple toggle for the notes textarea
+      function toggleNotes(btn) {
+        const notesDiv = btn.nextElementSibling; // <div> that holds the textarea
+        if (notesDiv.classList.contains("hidden")) {
+          notesDiv.classList.remove("hidden");
+          notesDiv.classList.add("notes-enter-active");
+        } else {
+          notesDiv.classList.add("hidden");
+          notesDiv.classList.remove("notes-enter-active");
+        }
+      }
+    </script>
+  </body>
+</html>
