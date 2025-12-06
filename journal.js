@@ -1,9 +1,11 @@
-// ---------------------------------------------------------------------------
-// 1️⃣  TMDB request configuration with given token
-// ---------------------------------------------------------------------------
-const TMDB_URL =
-  "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1";
+/* -------------------------------------------------------------
+   journal.js – shows only the movies that were marked as favourite
+   on index.html.  The index page stores the IDs in localStorage
+   under the key "favorites", so we read that exact key here.
+   ------------------------------------------------------------- */
 
+/* ---------- TMDB configuration (same as on index) ---------- */
+const TMDB_BASE_URL = "https://api.themoviedb.org/3/movie/";
 const TMDB_OPTIONS = {
   method: "GET",
   headers: {
@@ -13,86 +15,118 @@ const TMDB_OPTIONS = {
   },
 };
 
-// ---------------------------------------------------------------------------
-// 2️⃣  Helper: create a single movie card element
-// ---------------------------------------------------------------------------
-function createMovieCard(movie) {
-  // TMDB gives us a partial path for the poster; we need the full URL
+/* ---------- Local‑storage key used by index.html ----------
+   (index stores favourites under "favorites") */
+const FAVORITE_KEY = "favorites";
+
+/* ---------- Helper: read the favourite IDs ------------------- */
+function getFavouriteIds() {
+  const raw = localStorage.getItem(FAVORITE_KEY);
+  return raw ? JSON.parse(raw) : []; // returns an array of numbers
+}
+
+/* ---------- Persist/retrieve per‑movie notes ---------------- */
+function saveNoteForMovie(id, text) {
+  localStorage.setItem(`journalNote_${id}`, text);
+}
+function loadNoteForMovie(id) {
+  return localStorage.getItem(`journalNote_${id}`) || "";
+}
+
+/* ---------- Build a single card for a movie ---------------- */
+function createCard(movie) {
   const posterBase = "https://image.tmdb.org/t/p/w500";
   const posterUrl = movie.poster_path
     ? `${posterBase}${movie.poster_path}`
     : "https://via.placeholder.com/400x225";
 
-  // Build the DOM nodes (using template literals for readability)
+  const savedNote = loadNoteForMovie(movie.id);
+
   const card = document.createElement("div");
-  card.className = "bg-white rounded-lg shadow-md overflow-hidden flex flex-col";
+  card.className =
+    "bg-white rounded-lg shadow-md overflow-hidden flex flex-col";
 
   card.innerHTML = `
-    <img src="${posterUrl}" alt="${movie.title} Poster"
-         class="w-full h-48 object-cover"/>
+    <img src="${posterUrl}"
+         alt="${movie.title} poster"
+         class="w-full h-48 object-cover">
+
     <div class="p-4 flex-1 flex flex-col">
       <h3 class="text-xl font-semibold mb-2 truncate">${movie.title}</h3>
       <p class="text-gray-600 flex-1 line-clamp-3">
         ${movie.overview || "No description available."}
       </p>
+
       <button type="button"
               class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
               onclick="toggleNotes(this)">
         Add Note
       </button>
+
       <div class="mt-3 notes-enter hidden">
         <textarea rows="4"
                   class="w-full border rounded p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  placeholder="Write your personal notes here..."></textarea>
+                  placeholder="Write your personal notes here...">${savedNote}</textarea>
       </div>
     </div>
   `;
 
+  // Save note when the textarea loses focus
+  const textarea = card.querySelector("textarea");
+  textarea.addEventListener("blur", () => {
+    saveNoteForMovie(movie.id, textarea.value);
+  });
+
   return card;
 }
 
-// ---------------------------------------------------------------------------
-// 3️⃣  Render all movies into the grid
-// ---------------------------------------------------------------------------
-function renderMovies(movies) {
-  const grid = document.querySelector("main .grid");
+/* ---------- Render all favourite movies ---------------------- */
+function renderFavourites() {
+  const grid = document.querySelector(".grid"); // the grid container in journal.html
   if (!grid) {
-    console.error("❌ Could not find the .grid container.");
+    console.error("❌ No .grid element found on journal.html");
     return;
   }
 
-  // Clear any placeholder cards that might already be there
+  const favIds = getFavouriteIds();
+
+  // If there are no favourites, show a friendly message
+  if (favIds.length === 0) {
+    grid.innerHTML = `
+      <p class="col-span-full text-center text-gray-600">
+        You haven’t marked any movies as favourites yet.
+        Go back to the <a href="index.html" class="text-blue-600 underline">Home page</a> and add some!
+      </p>`;
+    return;
+  }
+
+  // Clear any placeholder cards
   grid.innerHTML = "";
 
-  movies.forEach((movie) => {
-    const card = createMovieCard(movie);
-    grid.appendChild(card);
+  // Fetch each favourite movie individually and render it
+  favIds.forEach((id) => {
+    fetch(`${TMDB_BASE_URL}${id}?language=en-US`, TMDB_OPTIONS)
+      .then((res) => {
+        if (!res.ok) throw new Error(`TMDB ${res.status}`);
+        return res.json();
+      })
+      .then((movie) => {
+        const card = createCard(movie);
+        grid.appendChild(card);
+      })
+      .catch((err) => {
+        console.error(`❌ Failed to load movie ${id}:`, err);
+      });
   });
 }
 
-// ---------------------------------------------------------------------------
-// 4️⃣  Fetch movies from TMDB and feed them to the renderer
-// ---------------------------------------------------------------------------
-function fetchPopularMovies() {
-  fetch(TMDB_URL, TMDB_OPTIONS)
-    .then((res) => {
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json();
-    })
-    .then((data) => {
-      // TMDB wraps results in a `results` array
-      if (Array.isArray(data.results)) {
-        renderMovies(data.results);
-      } else {
-        console.warn("⚠️ Unexpected TMDB response shape:", data);
-      }
-    })
-    .catch((err) => console.error("❌ TMDB fetch error:", err));
-}
-
-// ---------------------------------------------------------------------------
-// 5️⃣  Run once the DOM is ready
-// ---------------------------------------------------------------------------
+/* ---------- Initialise when the DOM is ready ---------------- */
 document.addEventListener("DOMContentLoaded", () => {
-  fetchPopularMovies();
+  renderFavourites();
 });
+
+/* -------------------------------------------------------------
+   The `toggleNotes` function (for expanding/collapsing the
+   textarea) is already defined inline in journal.html, so we do
+   not redeclare it here.
+------------------------------------------------------------- */
