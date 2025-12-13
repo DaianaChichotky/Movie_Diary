@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------
    journal.js – shows only the movies that were marked as favourite
    on index.html.  The index page stores the IDs in localStorage
-   under the key "favorites", so we read that exact key here.
+   under the key "favorites".
    ------------------------------------------------------------- */
 
 /* ---------- TMDB configuration (same as on index) ---------- */
@@ -15,17 +15,22 @@ const TMDB_OPTIONS = {
   },
 };
 
-/* ---------- Local‑storage key used by index.html ----------
-   (index stores favourites under "favorites") */
+/* ---------- Local‑storage key used by index.html ---------- */
 const FAVORITE_KEY = "favorites";
 
-/* ---------- Helper: read the favourite IDs ------------------- */
+/* ---------- Helper functions -------------------------------- */
 function getFavouriteIds() {
   const raw = localStorage.getItem(FAVORITE_KEY);
   return raw ? JSON.parse(raw) : []; // returns an array of numbers
 }
 
-/* ---------- Persist/retrieve per‑movie notes ---------------- */
+/* Remove a single ID from the stored favourites */
+function removeFavouriteId(id) {
+  const updated = getFavouriteIds().filter((num) => num !== id);
+  localStorage.setItem(FAVORITE_KEY, JSON.stringify(updated));
+}
+
+/* Persist / retrieve per‑movie notes */
 function saveNoteForMovie(id, text) {
   localStorage.setItem(`journalNote_${id}`, text);
 }
@@ -44,8 +49,24 @@ function createCard(movie) {
 
   const card = document.createElement("div");
   card.className =
-    "bg-white rounded-lg shadow-md overflow-hidden flex flex-col";
+    "bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative";
 
+  /* ★★ 1️⃣ Star‑button (instead of heart) ★★ */
+  const starBtn = document.createElement("button");
+  starBtn.type = "button";
+  starBtn.title = "Aus Favoriten entfernen";
+  starBtn.textContent = "⭐";                     // the star symbol
+  starBtn.className =
+    "absolute top-2 right-2 text-2xl hover:text-yellow-500 transition-colors";
+
+  // Click → remove from favourites & delete the card from the UI
+  starBtn.onclick = (e) => {
+    e.stopPropagation(); // prevent any parent click handlers
+    removeFavouriteId(movie.id);
+    card.remove();
+  };
+
+  /* ★★ 2️⃣ Rest of the card markup ★★ */
   card.innerHTML = `
     <img src="${posterUrl}"
          alt="${movie.title} poster"
@@ -71,7 +92,10 @@ function createCard(movie) {
     </div>
   `;
 
-  // Save note when the textarea loses focus
+  // Append the star button *after* setting innerHTML (so it isn’t overwritten)
+  card.appendChild(starBtn);
+
+  // Save note when textarea loses focus
   const textarea = card.querySelector("textarea");
   textarea.addEventListener("blur", () => {
     saveNoteForMovie(movie.id, textarea.value);
@@ -90,7 +114,7 @@ function renderFavourites() {
 
   const favIds = getFavouriteIds();
 
-  // If there are no favourites, show a friendly message
+  // No favourites → friendly message
   if (favIds.length === 0) {
     grid.innerHTML = `
       <p class="col-span-full text-center text-gray-600">
@@ -100,10 +124,10 @@ function renderFavourites() {
     return;
   }
 
-  // Clear any placeholder cards
+  // Clear any old cards
   grid.innerHTML = "";
 
-  // Fetch each favourite movie individually and render it
+  // Load each favourite movie and render its card
   favIds.forEach((id) => {
     fetch(`${TMDB_BASE_URL}${id}?language=en-US`, TMDB_OPTIONS)
       .then((res) => {
@@ -127,6 +151,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* -------------------------------------------------------------
    The `toggleNotes` function (for expanding/collapsing the
-   textarea) is already defined inline in journal.html, so we do
-   not redeclare it here.
-------------------------------------------------------------- */
+   textarea) is already defined inline in journal.html.
+   ------------------------------------------------------------- */
