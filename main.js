@@ -178,7 +178,37 @@ function renderSearchResults(movies) {
     overview.textContent = movie.overview || 'No overview available';
     overview.className = 'text-sm text-gray-600 line-clamp-3';
 
-    info.appendChild(title);
+    const btn = document.createElement('button');
+
+    function updateButton() {
+      if (isFavorite(movie.id)) {
+        btn.textContent = '⭐';
+        btn.className = 'cursor-pointer';
+      } else {
+        btn.textContent = '☆';
+        btn.className = 'cursor-pointer';
+      }
+    }
+
+    updateButton();
+
+    // Add the event listener to the button
+    btn.addEventListener('click', () => {
+      if (isFavorite(movie.id)) {
+        removeFavorite(movie.id);
+      } else {
+        addFavorite(movie.id);
+      }
+
+      updateButton();
+    });
+
+    const header = document.createElement('div');
+    header.className = 'flex justify-between items-start gap-2';
+    header.appendChild(title);
+    header.appendChild(btn);
+
+    info.appendChild(header);
     info.appendChild(overview);
 
     card.appendChild(img);
@@ -188,7 +218,7 @@ function renderSearchResults(movies) {
   });
 }
 
-// Event listener
+// Event listener to the submit botton of the search
 
 searchForm.addEventListener('submit', (e) => {
   e.preventDefault();
