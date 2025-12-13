@@ -20,16 +20,16 @@
 
       <!-- Tabs -->
       <div
-        class="flex flex-wrap justify-center sm:justify-start sm:space-x-10 mt-2 flex"
+        class="flex flex-wrap justify-center sm:justify-start sm:space-x-10 mt-2"
       >
         <a
           href="index.html"
-          class="border-2 border-[#3b82f6] text-[#3b82f6] font-bold px-7 py-3 rounded-md font-semibold hover:bg-[#dbeafe] transition text-sm text-center w-full sm:w-auto"
+          class="border-2 border-[#3b82f6] text-[#3b82f6] font-bold px-7 py-3 rounded-md hover:bg-[#dbeafe] transition text-sm text-center w-full sm:w-auto"
           >HomePage</a
         >
         <a
           href="journal.html"
-          class="border-2 border-[#3b82f6] text-[#3b82f6] font-bold px-7 py-3 rounded-md font-semibold hover:bg-[#dbeafe] transition text-sm text-center w-full sm:w-auto"
+          class="border-2 border-[#3b82f6] text-[#3b82f6] font-bold px-7 py-3 rounded-md hover:bg-[#dbeafe] transition text-sm text-center w-full sm:w-auto"
           >Journal</a
         >
       </div>
@@ -67,10 +67,15 @@
       </form>
 
       <!-- Search dialog -->
-      <dialog id="search-dialog">
-        <h2>Search Results</h2>
-        <div id="search-results"></div>
-        <button id="close-dialog">Close</button>
+      <dialog id="search-dialog" class="p-4 rounded shadow-xl w-96">
+        <h2 class="text-xl font-bold mb-4">Search Results</h2>
+        <div id="dialog-content"></div>
+        <button
+          id="dialog-close"
+          class="mt-4 bg-gray-700 text-white px-3 py-2 rounded transition cursor-pointer"
+        >
+          Close
+        </button>
       </dialog>
 
       <!-- Movies list-->
