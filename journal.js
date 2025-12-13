@@ -52,12 +52,12 @@ function createCard(movie) {
     "bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative";
 
   /* ★★ 1️⃣ Star‑button (instead of heart) ★★ */
-  const starBtn = document.createElement("button");
-  starBtn.type = "button";
-  starBtn.title = "Aus Favoriten entfernen";
-  starBtn.textContent = "⭐";                     // the star symbol
-  starBtn.className =
-    "absolute top-2 right-2 text-2xl hover:text-yellow-500 transition-colors";
+const starBtn = document.createElement("button");
+starBtn.type = "button";
+starBtn.title = "Remove from favorites";
+starBtn.textContent = "⭐";                     // the star symbol
+starBtn.className =
+  "absolute top-2 right-2 text-2xl hover:text-yellow-500 transition-colors cursor-pointer";
 
   // Click → remove from favourites & delete the card from the UI
   starBtn.onclick = (e) => {
