@@ -67,15 +67,28 @@
       </form>
 
       <!-- Search dialog -->
-      <dialog id="search-dialog" class="p-4 rounded shadow-xl w-96">
-        <h2 class="text-xl font-bold mb-4">Search Results</h2>
-        <div id="dialog-content"></div>
-        <button
-          id="dialog-close"
-          class="mt-0 bg-gray-700 text-white px-3 py-2 rounded transition cursor-pointer absolute top-2 right-2"
+      <dialog
+        id="search-dialog"
+        class="p-0 rounded shadow-xl w-96 max-h-[70vh] overflow-hidden"
+      >
+        <!-- Header sticky -->
+        <div class="relative bg-white p-4 border-b border-gray-200">
+          <h2 class="text-xl font-bold">Search Results</h2>
+          <button
+            id="dialog-close"
+            class="absolute top-2 right-2 bg-gray-700 text-white px-3 py-2 rounded transition cursor-pointer"
+          >
+            Close
+          </button>
+        </div>
+
+        <!-- Content scrollable -->
+        <div
+          id="dialog-content"
+          class="p-4 overflow-y-auto max-h-[calc(70vh-56px)]"
         >
-          Close
-        </button>
+          <!-- Here will be the search results.. -->
+        </div>
       </dialog>
 
       <!-- Movies list-->
