@@ -34,7 +34,9 @@
       </div>
 
       <!-- Tabs -->
-      <div class="flex flex-wrap justify-center sm:justify-start sm:space-x-10 mt-2 flex">
+      <div
+        class="flex flex-wrap justify-center sm:justify-start sm:space-x-10 mt-2"
+      >
         <a
           href="index.html"
           class="border-2 border-[#1e40af] bg-[#1e40af] text-white font-bold px-7 py-3 rounded-md hover:bg-sky-300 hover:text-black transition text-sm text-center w-full sm:w-auto"
@@ -49,9 +51,12 @@
     </nav>
 
     <!-- ==================== Main Content ==================== -->
-    <main class="pt-24 px-4"> <!-- pt-24 adds space for the fixed navbar -->
+    <main class="pt-24 px-4">
+      <!-- pt-24 adds space for the fixed navbar -->
       <div class="h-20">
-        <h2 class="relative top-2.5 text-center text-3xl font-bold font-sans text-[#1e40af]">
+        <h2
+          class="relative top-2.5 text-center text-3xl font-bold font-sans text-[#1e40af]"
+        >
           Your favorite movies
         </h2>
       </div>
@@ -59,7 +64,9 @@
       <!-- ======== Movie Cards Grid ======== -->
       <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <!-- ----- Card #1 (duplicate & modify for each movie) ----- -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+        <div
+          class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+        >
           <img
             src="https://via.placeholder.com/400x225"
             alt="Movie Poster"
@@ -88,7 +95,9 @@
         </div>
 
         <!-- ----- Card #2 ----- -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+        <div
+          class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+        >
           <img
             src="https://via.placeholder.com/400x225"
             alt="Movie Poster"
@@ -117,7 +126,9 @@
         </div>
 
         <!-- ----- Card #3 (add as many as you need) ----- -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
+        <div
+          class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col"
+        >
           <img
             src="https://via.placeholder.com/400x225"
             alt="Movie Poster"
@@ -156,12 +167,12 @@
       // Simple toggle for the notes textarea
       function toggleNotes(btn) {
         const notesDiv = btn.nextElementSibling; // <div> that holds the textarea
-        if (notesDiv.classList.contains("hidden")) {
-          notesDiv.classList.remove("hidden");
-          notesDiv.classList.add("notes-enter-active");
+        if (notesDiv.classList.contains('hidden')) {
+          notesDiv.classList.remove('hidden');
+          notesDiv.classList.add('notes-enter-active');
         } else {
-          notesDiv.classList.add("hidden");
-          notesDiv.classList.remove("notes-enter-active");
+          notesDiv.classList.add('hidden');
+          notesDiv.classList.remove('notes-enter-active');
         }
       }
     </script>
