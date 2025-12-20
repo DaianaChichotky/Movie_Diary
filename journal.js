@@ -51,7 +51,7 @@ function createCard(movie) {
   card.className =
     "bg-white rounded-lg shadow-md overflow-hidden flex flex-col relative";
 
-  /* ★★ 1️⃣ Star‑button (instead of heart) ★★ */
+  /* ★★ 1️⃣ Star‑button ★★ */
 const starBtn = document.createElement("button");
 starBtn.type = "button";
 starBtn.title = "Remove from favorites";
@@ -78,11 +78,11 @@ starBtn.className =
         ${movie.overview || "No description available."}
       </p>
 
-      <button type="button"
-              class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded"
-              onclick="toggleNotes(this)">
-        Add Note
-      </button>
+     <button type="button"
+        class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded cursor-pointer hover:cursor-pointer"
+        onclick="toggleNotes(this)">
+  Add Note
+</button>
 
       <div class="mt-3 notes-enter hidden">
         <textarea rows="4"
