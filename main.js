@@ -54,7 +54,7 @@ async function fetchMovies() {
 
 // 4. Show movies on screen
 function renderMovies(movies) {
-  moviesContainer.innerHTML = '';
+  moviesContainer.innerHTML = ''; //it cleans the container to not duplicate content
 
   movies.forEach((movie) => {
     // Create elements
@@ -76,7 +76,10 @@ function renderMovies(movies) {
     overview.textContent = movie.overview;
     overview.className = 'text-sm text-gray-600 mt-2';
 
+    // button to add/remove from favs
     const btn = document.createElement('button');
+
+    // button function to change "Add to favs"/"Added to favs"
     function updateButton() {
       if (isFavorite(movie.id)) {
         btn.textContent = 'Added to favorites ⭐';
@@ -102,12 +105,11 @@ function renderMovies(movies) {
       updateButton();
     });
 
-    // Add to DOM
+    // Add all the elements to DOM
     card.appendChild(img);
     card.appendChild(title);
     card.appendChild(overview);
     card.appendChild(btn);
-
     moviesContainer.appendChild(card);
   });
 }
